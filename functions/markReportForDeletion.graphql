@@ -1,0 +1,22 @@
+subscription {
+  Report(
+    filter: {mutation_in: [UPDATED], updatedFields_contains_some: ["toDelete"]}
+  ) {
+    updatedFields
+    node {
+      id
+      headables {
+        id
+      }
+      thresholdables {
+        id
+      }
+      meetingables {
+        id
+      }
+      letterplateables {
+        id
+      }
+    }
+  }
+}

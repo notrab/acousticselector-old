@@ -1,0 +1,144 @@
+type File @model {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  report: Report @relation(name: "FileOnReport")
+  secret: String! @isUnique
+  size: Int!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}
+
+type Headable @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  product: Product @relation(name: "ProductOnHeadable")
+  report: Report @relation(name: "ReportOnHeadable")
+  updatedAt: DateTime!
+}
+
+type Manufacturer @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String! @isUnique
+  updatedAt: DateTime!
+  cores: [Core!]! @relation(name: "CoreOnManufacturer")
+}
+
+type Meetingable @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  product: Product @relation(name: "MeetingableOnProduct")
+  report: Report @relation(name: "ReportOnMeetingable")
+  updatedAt: DateTime!
+}
+
+type Product @model {
+  createdAt: DateTime!
+  headables: [Headable!]! @relation(name: "ProductOnHeadable")
+  id: ID! @isUnique
+  meetingables: [Meetingable!]! @relation(name: "MeetingableOnProduct")
+  name: String!
+  slug: String! @isUnique
+  thresholdables: [Thresholdable!]! @relation(name: "ThresholdableOnProduct")
+  letterplateables: [Letterplateable!]!
+    @relation(name: "LetterplateableOnProduct")
+  updatedAt: DateTime!
+}
+
+type Report @model {
+  notes: String
+  createdAt: DateTime!
+  dbrw: Int!
+  doorType: String!
+  file: File @relation(name: "FileOnReport")
+  glass: String @defaultValue(value: "")
+  headables: [Headable!]! @relation(name: "ReportOnHeadable")
+  id: ID! @isUnique
+  isAssessment: Boolean @defaultValue(value: false)
+  isPublished: Boolean! @defaultValue(value: true)
+  meetingables: [Meetingable!]! @relation(name: "ReportOnMeetingable")
+  thresholdables: [Thresholdable!]! @relation(name: "ReportOnThresholdable")
+  letterplateables: [Letterplateable!]!
+    @relation(name: "ReportOnLetterplateable")
+  updatedAt: DateTime!
+  oldId: String @isUnique
+  testBy: String
+  testDate: DateTime
+  testId: Int
+  core: Core @relation(name: "CoreOnReport")
+  likes: [Like!]! @relation(name: "LikeOnReport")
+  projects: [Project!]! @relation(name: "ProjectOnReport")
+  toDelete: Boolean @defaultValue(value: false)
+}
+
+type Thresholdable @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  product: Product @relation(name: "ThresholdableOnProduct")
+  report: Report @relation(name: "ReportOnThresholdable")
+  updatedAt: DateTime!
+}
+
+type Letterplateable @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  product: Product @relation(name: "LetterplateableOnProduct")
+  report: Report @relation(name: "ReportOnLetterplateable")
+  updatedAt: DateTime!
+}
+
+type Core @model {
+  createdAt: DateTime!
+  fireRating: FireRating!
+  id: ID! @isUnique
+  manufacturer: Manufacturer! @relation(name: "CoreOnManufacturer")
+  name: String
+  reports: [Report!]! @relation(name: "CoreOnReport")
+  thickness: String! @defaultValue(value: "")
+  updatedAt: DateTime!
+}
+
+type SaveResult @model {
+  createdAt: DateTime!
+  filter: Json!
+  id: ID! @isUnique
+  options: Json!
+  updatedAt: DateTime!
+}
+
+type Like @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  report: Report @relation(name: "LikeOnReport")
+  updatedAt: DateTime!
+  user: User @relation(name: "LikeOnUser")
+}
+
+type Project @model {
+  createdAt: DateTime!
+  id: ID! @isUnique
+  name: String!
+  reports: [Report!]! @relation(name: "ProjectOnReport")
+  updatedAt: DateTime!
+  user: User @relation(name: "ProjectOnUser")
+}
+
+type User @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String @isUnique
+  password: String!
+  name: String!
+  projects: [Project!]! @relation(name: "ProjectOnUser")
+  admin: Boolean @defaultValue(value: false)
+  likes: [Like!]! @relation(name: "LikeOnUser")
+}
+
+enum FireRating {
+  FD30
+  FD60
+  FD90
+}

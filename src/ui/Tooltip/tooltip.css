@@ -1,0 +1,17 @@
+.rc-slider-tooltip {
+  z-index: 1000;
+}
+
+.rc-tooltip-placement-top .rc-tooltip-arrow {
+  border-top-color: #303b44;
+}
+
+.rc-tooltip-inner {
+  align-items: center;
+  background-color: #303b44;
+  box-shadow: none;
+  display: flex;
+  font-size: 15px;
+  padding: 0 1.5rem;
+  border-radius: 0.4rem;
+}

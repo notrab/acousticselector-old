@@ -1,0 +1,148 @@
+types: ./types.graphql
+
+permissions:
+  - operation: File.read
+    authenticated: false
+  - operation: File.create
+  - operation: File.update
+  - operation: File.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: Report.read
+    authenticated: false
+  - operation: Report.create
+  - operation: Report.update
+  - operation: Report.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: Headable.read
+    authenticated: false
+  - operation: Headable.create
+  - operation: Headable.update
+  - operation: Headable.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: Meetingable.read
+    authenticated: false
+  - operation: Meetingable.create
+  - operation: Meetingable.update
+  - operation: Meetingable.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: Thresholdable.read
+    authenticated: false
+  - operation: Thresholdable.create
+  - operation: Thresholdable.update
+  - operation: Thresholdable.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: Letterplateable.read
+    authenticated: false
+  - operation: Letterplateable.create
+  - operation: Letterplateable.update
+  - operation: Letterplateable.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: Product.read
+    authenticated: false
+  - operation: Product.create
+  - operation: Product.update
+  - operation: Product.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: Core.read
+    authenticated: false
+  - operation: Core.create
+  - operation: Core.update
+  - operation: Core.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: Manufacturer.read
+    authenticated: false
+  - operation: Manufacturer.create
+  - operation: Manufacturer.update
+  - operation: Manufacturer.delete
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: FileOnReport.*
+  - operation: ReportOnMeetingable.*
+  - operation: MeetingableOnProduct.*
+  - operation: ReportOnHeadable.*
+  - operation: ProductOnHeadable.connect
+  - operation: ReportOnThresholdable.*
+  - operation: ThresholdableOnProduct.*
+  - operation: CoreOnManufacturer.*
+  - operation: CoreOnReport.*
+  - operation: LetterplateableOnProduct.*
+  - operation: ReportOnLetterplateable.*
+    authenticated: true
+    query: ./permissions/Report.graphql
+
+  - operation: User.create
+    authenticated: false
+
+  - operation: Project.read
+  - operation: Project.create
+  - operation: ProjectOnUser.*
+  - operation: User.read
+  - operation: User.update
+  - operation: LikeOnReport.*
+  - operation: ProjectOnReport.*
+  - operation: LikeOnUser.*
+  - operation: ProjectOnUser.*
+    authenticated: true
+
+functions:
+  register:
+    handler:
+      code:
+        src: ./functions/register.js
+    type: resolver
+    schema: ./functions/register.graphql
+
+  login:
+    handler:
+      code:
+        src: ./functions/login.js
+    type: resolver
+    schema: ./functions/login.graphql
+
+  newReportSlackNotification2:
+    handler:
+      code:
+        src: ./functions/newReportSlackNotification.js
+        environment:
+          SLACK_WEBHOOK_URL: ${env:NEW_REPORT_SLACK_WEBHOOK_URL}
+    type: subscription
+    query: ./functions/newReportSlackNotification.graphql
+
+  newUserSlackNotification:
+    handler:
+      code:
+        src: ./functions/newUserSlackNotification.js
+        environment:
+          SLACK_WEBHOOK_URL: ${env:NEW_USER_SLACK_WEBHOOK_URL}
+    type: subscription
+    query: ./functions/newUserSlackNotification.graphql
+
+  markReportForDeletion:
+    handler:
+      code:
+        src: ./functions/markReportForDeletion.js
+    type: subscription
+    query: ./functions/markReportForDeletion.graphql
+
+
+rootTokens:
+  - register
+  - login
+  - markReportForDeletion

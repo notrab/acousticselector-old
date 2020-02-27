@@ -1,0 +1,21 @@
+# comment
+
+subscription {
+  Report(filter: {mutation_in: [CREATED]}) {
+    node {
+      id
+      isAssessment
+      doorType
+      dbrw
+      core {
+        id
+        thickness
+        fireRating
+        manufacturer {
+          id
+          name
+        }
+      }
+    }
+  }
+}
